@@ -141,7 +141,7 @@ class _Register_pageState extends State<login_page> {
                             );
                           }
                           print(e.code);
-                          print("*************************");
+                          print("************************");
                         } catch (e) {
                           print(e);
                         }
