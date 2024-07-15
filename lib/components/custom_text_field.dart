@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Custom_Text_Form_Field extends StatelessWidget {
+class CustomTextFormField extends StatelessWidget {
   final String? name;
-  Function(String)? Onchanged;
-  Custom_Text_Form_Field({this.Onchanged, Key? key, this.name})
+ final  Function(String)? onChanged;
+   const CustomTextFormField({this.onChanged, Key? key, this.name})
       : super(key: key);
 
   @override
@@ -22,8 +22,8 @@ class Custom_Text_Form_Field extends StatelessWidget {
                 return "please enter a vaild email ";
               }
             } else if (name == "Password") {
-              if (checkPasswordStrength(data) == PasswordStrength.Strong) {
-              } else if (checkPasswordStrength(data) == PasswordStrength.Weak) {
+              if (checkPasswordStrength(data) == PasswordStrength.strong) {
+              } else if (checkPasswordStrength(data) == PasswordStrength.weak) {
                 return " the given password is weak  ";
               } else {
                 return "Please enter at least 8 Characters & numbers & symbols";
@@ -31,7 +31,7 @@ class Custom_Text_Form_Field extends StatelessWidget {
             }
           }
         },
-        onChanged: Onchanged!,
+        onChanged: onChanged!,
         style: const TextStyle(color: Color(0xffE0E6EB)),
         decoration: InputDecoration(
           hintStyle: const TextStyle(color: Color(0xffE0E6EB)),
@@ -58,34 +58,31 @@ bool isValidEmail(String email) {
 }
 
 enum PasswordStrength {
-  Weak,
-  Strong,
-  None,
+  weak,
+  strong,
+  none,
 }
 
 PasswordStrength checkPasswordStrength(String password) {
   // Check if the password is null or empty
-  if (password == null || password.isEmpty) {
-    return PasswordStrength.None;
+  if (password.isEmpty) {
+    return PasswordStrength.none;
   }
 
   // Check the length of the password
   if (password.length < 8) {
-    return PasswordStrength.Weak;
+    return PasswordStrength.weak;
   }
 
   // Check if the password contains at least one uppercase letter, one lowercase letter, and one digit
   if (!password.contains(RegExp(r'[A-Z]')) ||
       !password.contains(RegExp(r'[a-z]')) ||
       !password.contains(RegExp(r'[0-9]'))) {
-    return PasswordStrength.Weak;
+    return PasswordStrength.weak;
   }
 
-  // Check if the password contains special characters
-  if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-    return PasswordStrength.Weak;
-  }
+
 
   // If none of the above conditions are met, the password is considered strong
-  return PasswordStrength.Strong;
+  return PasswordStrength.strong;
 }

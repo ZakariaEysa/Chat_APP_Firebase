@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 import '../constants.dart';
 
@@ -8,7 +7,7 @@ class Message {
   final String message;
   final String id;
 
-  factory Message.fromjson(Jsondata) {
-    return Message(Jsondata[kMessage], Jsondata['id']);
+  factory Message.fromJson(jsonData) {
+    return Message(jsonData[kMessage], jsonData['id']);
   }
 }

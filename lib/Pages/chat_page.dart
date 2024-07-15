@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../constants.dart';
-import 'Chat_Bubble.dart';
+import 'chat_bubble.dart';
 
-class Chat_Page extends StatefulWidget {
-  Chat_Page({super.key});
+class ChatPage extends StatefulWidget {
+  const ChatPage({super.key});
   static String id = "ChatPage";
 
   @override
-  State<Chat_Page> createState() => _Chat_PageState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
-class _Chat_PageState extends State<Chat_Page> {
+class _ChatPageState extends State<ChatPage> {
   final _controller = ScrollController();
 
   CollectionReference messages =
       FirebaseFirestore.instance.collection(kMessagesCollections);
 
-  TextEditingController Controller = TextEditingController();
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +30,9 @@ class _Chat_PageState extends State<Chat_Page> {
       stream: messages.orderBy(kCreatedAt, descending: true).snapshots(),
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
-          List<Message> MessagesList = [];
+          List<Message> messagesList = [];
           for (int i = 0; i < snapshot.data!.docs.length; i++) {
-            MessagesList.add(Message.fromjson(snapshot.data!.docs[i]));
+            messagesList.add(Message.fromJson(snapshot.data!.docs[i]));
             //  print(snapshot.data!.docs[i][kMessage]);
           }
 
@@ -61,14 +61,14 @@ class _Chat_PageState extends State<Chat_Page> {
                   child: ListView.builder(
                     reverse: true,
                     controller: _controller,
-                    itemCount: MessagesList.length,
+                    itemCount: messagesList.length,
                     itemBuilder: (context, index) {
-                      return MessagesList[index].id == email
-                          ? BubbleChat(
-                              message: MessagesList[index].message.toString(),
+                      return messagesList[index].id == email
+                          ? ChatBubble(
+                              message: messagesList[index].message.toString(),
                             )
                           : BubbleChatForAfriend(
-                              message: MessagesList[index].message.toString(),
+                              message: messagesList[index].message.toString(),
                             );
                     },
                   ),
@@ -80,7 +80,7 @@ class _Chat_PageState extends State<Chat_Page> {
                   //     const EdgeInsets.only(right: 10, left: 8, bottom: 8, top: 5),
 
                   child: TextField(
-                    controller: Controller,
+                    controller: controller,
 
                     onSubmitted: (data) {
                       messages.add({
@@ -94,7 +94,7 @@ class _Chat_PageState extends State<Chat_Page> {
                         duration: const Duration(seconds: 1),
                         curve: Curves.fastOutSlowIn,
                       );
-                      Controller.clear();
+                      controller.clear();
                     },
                     // showCursor: true,
 
@@ -103,7 +103,7 @@ class _Chat_PageState extends State<Chat_Page> {
                         suffixIcon: GestureDetector(
                           onTap: () {
                             messages.add({
-                              'message': Controller.text,
+                              'message': controller.text,
                               kCreatedAt: DateTime.now(),
                               'id': email,
                             });
@@ -113,7 +113,7 @@ class _Chat_PageState extends State<Chat_Page> {
                               duration: const Duration(seconds: 1),
                               curve: Curves.fastOutSlowIn,
                             );
-                            Controller.clear();
+                            controller.clear();
                           },
                           child: const Icon(
                             Icons.send,

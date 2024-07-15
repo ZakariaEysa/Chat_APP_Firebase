@@ -2,34 +2,34 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../components/Custom_button.dart';
-import '../components/Custom_Text_Field.dart';
+import '../components/custom_button.dart';
+import '../components/custom_text_field.dart';
 import '../constants.dart';
-import '../helper/ShowSnackBar.dart';
-import 'Chat_Page.dart';
+import '../helper/show_snack_bar.dart';
+import 'chat_page.dart';
 
-class Register_page extends StatefulWidget {
-  Register_page({super.key});
+class RegisterPage extends StatefulWidget {
+   const RegisterPage({super.key});
 
   static String id = "registerpage";
 
   @override
-  State<Register_page> createState() => _Register_pageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _Register_pageState extends State<Register_page> {
+class _RegisterPageState extends State<RegisterPage> {
   String? email;
 
   String? password;
 
-  bool Indecator = false;
+  bool indicator = false;
 
   GlobalKey<FormState> formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
-      inAsyncCall: Indecator,
+      inAsyncCall: indicator,
       child: Scaffold(
         backgroundColor: kPrimaryColor,
         body: Padding(
@@ -45,16 +45,14 @@ class _Register_pageState extends State<Register_page> {
                   kLogo,
                   height: 100,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      child: const Text("Scholar Chat",
-                          style: TextStyle(
-                              fontSize: 45,
-                              color: Color(0xffE0E6EB),
-                              fontFamily: 'pacifico')),
-                    ),
+                    Text("Scholar Chat",
+                        style: TextStyle(
+                            fontSize: 45,
+                            color: Color(0xffE0E6EB),
+                            fontFamily: 'pacifico')),
                   ],
                 ),
                 const SizedBox(
@@ -70,36 +68,36 @@ class _Register_pageState extends State<Register_page> {
                 const SizedBox(
                   height: 20,
                 ),
-                Custom_Text_Form_Field(
-                    Onchanged: (data) {
+                CustomTextFormField(
+                    onChanged: (data) {
                       email = data;
                     },
                     name: "Email"),
                 const SizedBox(
                   height: 10,
                 ),
-                Custom_Text_Form_Field(
-                    Onchanged: (data) {
+                CustomTextFormField(
+                    onChanged: (data) {
                       password = data;
                     },
                     name: "Password"),
                 const SizedBox(
                   height: 20,
                 ),
-                Custom_button(
+                CustomButton(
                     // ontap:(){
                     //   email="sdfsdf";
                     // },
-                    ontap: () async {
+                    onTap: () async {
                       if (formKey.currentState!.validate()) {
                         try {
                           // //
                           setState(() {
-                            Indecator = true;
+                            indicator = true;
                           });
-                          await RegisterUser();
+                          await registerUser();
                           setState(() {
-                            Indecator = false;
+                            indicator = false;
                           });
                           // zakaaria@gmail.cpm
                           //Aa12@asfsf
@@ -110,29 +108,27 @@ class _Register_pageState extends State<Register_page> {
                           //    context,
                           //    text: "Registration success",
                           //  );
-                          Navigator.pushNamed(context, Chat_Page.id);
+                          Navigator.pushNamed(context, ChatPage.id);
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'email-already-in-use') {
                             setState(() {
-                              Indecator = false;
+                              indicator = false;
                             });
-                            ShowSnackBar(
+                            showSnackBar(
                               context,
                               text:
                                   'The account already exists for that email.',
                             );
                           } else {
                             setState(() {
-                              Indecator = false;
+                              indicator = false;
                             });
-                            ShowSnackBar(
+                            showSnackBar(
                               context,
                               text:
                                   'There was an error please check your connection',
                             );
                           }
-                        } catch (e) {
-                          print(e);
                         }
                       } else {}
 
@@ -169,8 +165,8 @@ class _Register_pageState extends State<Register_page> {
     );
   }
 
-  Future<void> RegisterUser() async {
-    UserCredential User =
+  Future<void> registerUser() async {
+
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email!,
       password: password!,

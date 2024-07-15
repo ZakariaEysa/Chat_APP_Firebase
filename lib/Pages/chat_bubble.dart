@@ -2,31 +2,25 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart';
 
-class BubbleChat extends StatelessWidget {
-  BubbleChat({
+class ChatBubble extends StatelessWidget {
+   ChatBubble({
     this.message,
     this.messageColor,
     super.key,
   });
-  Color? messageColor;
-  String? message;
+    Color? messageColor;
+   String? message;
 
   @override
   Widget build(BuildContext context) {
-    if (messageColor == null) {
-      messageColor = kPrimaryColor;
-    }
+    messageColor ??= kPrimaryColor;
 
-    if (message == null) {
-      message = "iam the new user  ";
-    }
+    message ??= "iam the new user  ";
 
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        // width: 150,
-        // height: 65,
-        // alignment: Alignment.centerLeft,
+
         padding:
             const EdgeInsets.only(left: 16, top: 32, bottom: 32, right: 32),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -57,13 +51,9 @@ class BubbleChatForAfriend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (messageColor == null) {
-      messageColor = const Color(0xff006D84);
-    }
+    messageColor ??= const Color(0xff006D84);
 
-    if (message == null) {
-      message = "iam the new user  ";
-    }
+    message ??= "iam the new user  ";
 
     return Align(
       alignment: Alignment.centerRight,

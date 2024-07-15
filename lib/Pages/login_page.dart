@@ -1,38 +1,40 @@
-import 'package:firebase/Pages/Chat_Page.dart';
+import 'package:firebase/Pages/chat_page.dart';
 import 'package:firebase/Pages/register_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../components/Custom_button.dart';
-import '../components/Custom_Text_Field.dart';
+import '../components/custom_button.dart';
+import '../components/custom_text_field.dart';
 import '../constants.dart';
-import '../helper/ShowSnackBar.dart';
+import '../helper/show_snack_bar.dart';
 
-class login_page extends StatefulWidget {
-  login_page({super.key});
+class LoginPage extends StatefulWidget {
+   const LoginPage({super.key});
 
   static String id = "login_page";
   // String  GGMAIL= "zakaria@gmail.cpm";
   // String Passsword="Aa12@asfsf";
+   //   zzzz@gmail.com
+  // Aa12@asfsf
 
   @override
-  State<login_page> createState() => _Register_pageState();
+  State<LoginPage> createState() => _Register_pageState();
 }
 
-class _Register_pageState extends State<login_page> {
+class _Register_pageState extends State<LoginPage> {
   String? email;
 
   String? password;
 
-  bool Indecator = false;
+  bool indicator = false;
 
   GlobalKey<FormState> formKey = GlobalKey();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext _context) {
     return ModalProgressHUD(
-      inAsyncCall: Indecator,
+      inAsyncCall: indicator,
       child: Scaffold(
         backgroundColor: kPrimaryColor,
         body: Padding(
@@ -71,16 +73,16 @@ class _Register_pageState extends State<login_page> {
                 const SizedBox(
                   height: 20,
                 ),
-                Custom_Text_Form_Field(
-                    Onchanged: (data) {
+                CustomTextFormField(
+                    onChanged: (data) {
                       email = data.trim();
                     },
                     name: "Email"),
                 const SizedBox(
                   height: 10,
                 ),
-                Custom_Text_Form_Field(
-                    Onchanged: (data) {
+                CustomTextFormField(
+                    onChanged: (data) {
                       password = data;
                       //password=password!.replaceAll(" ","" );
                     },
@@ -88,62 +90,59 @@ class _Register_pageState extends State<login_page> {
                 const SizedBox(
                   height: 20,
                 ),
-                Custom_button(
+                CustomButton(
                     // ontap:(){
                     //   email="sdfsdf";
                     // },
-                    ontap: () async {
+                    onTap: () async {
                       if (formKey.currentState!.validate()) {
                         try {
                           //
                           setState(() {
-                            Indecator = true;
+                            indicator = true;
                           });
-                          await LoginUser();
+                          await loginUser();
                           setState(() {
-                            Indecator = false;
+                            indicator = false;
                           });
                           //     zakaaria@gmail.cpm
                           //    Aa12@asfsf
 
                           //   zakaria@gmail.cpmm
 
-                          ShowSnackBar(
-                            context,
+                          showSnackBar(
+                            _context,
                             text: "Login success",
                           );
-                          Navigator.pushNamed(context, Chat_Page.id,
+                          Navigator.pushNamed(_context, ChatPage.id,
                               arguments: email);
                         } on FirebaseAuthException catch (e) {
                           setState(() {
-                            Indecator = false;
+                            indicator = false;
                           });
                           if (e.code == 'user-not-found') {
-                            ShowSnackBar(
-                              context,
+                            showSnackBar(
+                              _context,
                               text: 'No user found for that email.',
                             );
                           } else if (e.code == 'wrong-password') {
-                            ShowSnackBar(
+                            showSnackBar(
                               context,
                               text: 'Wrong password provided for that user.',
                             );
                           } else if (e.code == 'invalid-credential') {
-                            ShowSnackBar(
-                              context,
+                            showSnackBar(
+                              _context,
                               text: ' Please check your email and password.',
                             );
                           } else {
-                            ShowSnackBar(
-                              context,
+                            showSnackBar(
+                              _context,
                               text:
                                   'An error occurred. Please check your connection.',
                             );
                           }
-                          print(e.code);
-                          print("************************");
-                        } catch (e) {
-                          print(e);
+
                         }
                       } else {}
                     },
@@ -160,7 +159,7 @@ class _Register_pageState extends State<login_page> {
                     ),
                     GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, Register_page.id);
+                          Navigator.pushNamed(_context, RegisterPage.id);
                         },
                         child: const Text(
                           " Register",
@@ -176,8 +175,8 @@ class _Register_pageState extends State<login_page> {
     );
   }
 
-  Future<void> LoginUser() async {
-    final credential = await FirebaseAuth.instance
+  Future<void> loginUser() async {
+     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email!, password: password!);
   }
 }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Custom_button extends StatelessWidget {
-  String? text;
-  VoidCallback? ontap;
+class CustomButton extends StatelessWidget {
+ final  String? text;
+  final VoidCallback? onTap;
 
-  Custom_button({this.ontap, super.key, this.text});
+  const  CustomButton({this.onTap, super.key, this.text});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ontap,
+      onTap: onTap,
       child: Container(
         width: double.infinity,
         height: 60,
@@ -17,14 +17,7 @@ class Custom_button extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(8))),
         child: Center(child: Text(text!)),
-        // child: ElevatedButton(
-        //   onPressed: () {},
-        //   style: ElevatedButton.styleFrom(
-        //     foregroundColor: Colors.black,
-        //     backgroundColor: Colors.white, // Text color
-        //   ),
-        //   child: Text('Login'),
-        // ),
+
       ),
     );
   }
