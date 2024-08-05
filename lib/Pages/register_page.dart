@@ -1,4 +1,4 @@
-import 'package:firebase/cubits/register/register_cubit.dart';
+import 'package:firebase/cubits/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -25,7 +25,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RegisterCubit, RegisterState>(
+    return BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is RegisterLoading) {
             indicator = true;
@@ -98,7 +98,7 @@ class RegisterPage extends StatelessWidget {
                         CustomButton(
                             onTap: () async {
                               if (formKey.currentState!.validate()) {
-                                BlocProvider.of<RegisterCubit>(context)
+                                BlocProvider.of<AuthCubit>(context)
                                     .registerUser(
                                         email: email, password: password);
                               } else {}
