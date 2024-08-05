@@ -30,6 +30,7 @@ class CustomTextFormField extends StatelessWidget {
               }
             }
           }
+          return null;
         },
         onChanged: onChanged!,
         style: const TextStyle(color: Color(0xffE0E6EB)),
