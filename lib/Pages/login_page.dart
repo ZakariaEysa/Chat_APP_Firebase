@@ -1,12 +1,12 @@
 import 'package:firebase/Pages/chat_page.dart';
 import 'package:firebase/Pages/register_page.dart';
-import 'package:firebase/cubits/auth/auth_cubit.dart';
 import 'package:firebase/cubits/chat/chat_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
+import '../blocs/auth_bloc/auth_bloc.dart';
 import '../components/custom_button.dart';
 import '../components/custom_text_field.dart';
 import '../constants.dart';
@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
+    return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is LoginLoading) {
           indicator = true;
@@ -36,7 +36,7 @@ class LoginPage extends StatelessWidget {
 
           BlocProvider.of<ChatCubit>(context).getMessages();
 
-          Navigator.pushNamed(context, ChatPage.id);
+          Navigator.pushReplacementNamed(context, ChatPage.id);
         } else if (state is LoginFailure) {
           indicator = false;
           showSnackBar(context, text: state.error);
@@ -103,8 +103,8 @@ class LoginPage extends StatelessWidget {
                       onTap: () async {
                         if (formKey.currentState!.validate()) {
                           try {
-                            BlocProvider.of<AuthCubit>(context)
-                                .loginUser(email: email!, password: password!);
+                            BlocProvider.of<AuthBloc>(context).add(
+                                LoginEvent(email: email!, password: password!));
                           } on FirebaseAuthException catch (e) {}
                         } else {}
                       },
@@ -121,7 +121,8 @@ class LoginPage extends StatelessWidget {
                       ),
                       GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, RegisterPage.id);
+                            Navigator.pushReplacementNamed(
+                                context, RegisterPage.id);
                           },
                           child: const Text(
                             " Register",
@@ -136,10 +137,5 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> loginUser() async {
-    await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email!, password: password!);
   }
 }

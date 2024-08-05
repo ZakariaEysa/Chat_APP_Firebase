@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 
 part 'auth_state.dart';
@@ -47,5 +48,12 @@ class AuthCubit extends Cubit<AuthState> {
         emit(LoginFailure('An error occurred. Please check your connection.'));
       }
     }
+  }
+
+  @override
+  void onChange(Change<AuthState> change) {
+    // print(change);
+    // debugPrint(change.toString());
+    super.onChange(change);
   }
 }

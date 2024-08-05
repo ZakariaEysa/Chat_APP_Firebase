@@ -1,3 +1,4 @@
+import 'package:firebase/Pages/login_page.dart';
 import 'package:firebase/cubits/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ class RegisterPage extends StatelessWidget {
             indicator = false;
             BlocProvider.of<ChatCubit>(context).getMessages();
 
-            Navigator.pushNamed(context, ChatPage.id);
+            Navigator.pushReplacementNamed(context, ChatPage.id);
           } else if (state is RegisterFailure) {
             indicator = false;
             showSnackBar(context, text: state.error);
@@ -117,7 +118,8 @@ class RegisterPage extends StatelessWidget {
                             ),
                             GestureDetector(
                                 onTap: () {
-                                  Navigator.pop(context);
+                                  Navigator.pushReplacementNamed(
+                                      context, LoginPage.id);
                                 },
                                 child: const Text(
                                   " Login",

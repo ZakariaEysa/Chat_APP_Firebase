@@ -1,3 +1,4 @@
+import 'package:firebase/blocs/auth_bloc/auth_bloc.dart';
 import 'package:firebase/cubits/auth/auth_cubit.dart';
 import 'package:firebase/cubits/chat/chat_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,13 +8,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'Pages/chat_page.dart';
 import 'Pages/login_page.dart';
 import 'Pages/register_page.dart';
-import 'bloc/simple_bloc_observer.dart';
+import 'blocs/simple_bloc_observer.dart';
 import 'firebase_options.dart';
 
-// qqq@gmail.comm
+// qqq@gmail.comma
 // Aa12@asfsf
 void main() async {
   Bloc.observer = SimpleBlocObserver();
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
@@ -31,6 +33,7 @@ class ScholarChat extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => ChatCubit()),
+        BlocProvider(create: (context) => AuthBloc()),
       ],
 
       // qqwweerr
